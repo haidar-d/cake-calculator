@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>حاسبة سعر الكيك</title>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      direction: rtl;
+      background-image: url('https://i.imgur.com/tqRQ6Gp.png');
+      background-size: cover;
+      background-repeat: repeat;
+      padding: 40px;
+      max-width: 700px;
+      margin: auto;
+      border-radius: 30px;
+      background-color: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    h2 {
+      color: #d63384;
+      text-align: center;
+      font-size: 2.2em;
+      margin-bottom: 30px;
+    }
+    label, select, input[type=checkbox], input[type=radio] {
+      font-size: 1.1em;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+    }
+    label {
+      display: block;
+      margin: 12px 0;
+    }
+    button {
+      background-color: #ff66b2;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 15px;
+      font-size: 1.1em;
+      cursor: pointer;
+      display: block;
+      margin: 30px auto 20px;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #e65ca8;
+    }
+    #total {
+      font-weight: bold;
+      color: #28a745;
+      font-size: 1.6em;
+      text-align: center;
+    }
+    .addon-list, .design-list {
+      background-color: #fff5fa;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h2>🎂 حاسبة سعر الكيك لمتجرك الجميل 🍰</h2>
+
+  <label for="people">كم شخص؟</label>
+  <select id="people">
+    <option value="4-5">٤-٥ أشخاص</option>
+    <option value="6">٦ أشخاص</option>
+    <option value="7-8">٧-٨ أشخاص</option>
+    <option value="8-9">٨-٩ أشخاص</option>
+    <option value="10-12">١٠-١٢ شخص</option>
+    <option value="13-15">١٣-١٥ شخص</option>
+  </select>
+
+  <div class="design-list">
+    <h3>🍰 نوع الكيكة:</h3>
+    <label><input type="radio" name="cakeType" value="fancy" checked> فنتج / تاج و كلتر</label>
+    <label><input type="radio" name="cakeType" value="plain"> سادة مع تاج وكلتر</label>
+    <label><input type="radio" name="cakeType" value="basic"> كيكة عادية (أسعار تبدأ من)</label>
+  </div>
+
+  <div class="addon-list">
+    <h3>✨ إضافات لذيذة:</h3>
+    <label><input type="checkbox" value="8000"> طبقة إضافية (+8,000)</label>
+    <label><input type="checkbox" value="6000"> فواكه طازجة (+6,000)</label>
+    <label><input type="checkbox" value="2000"> كتابة خاصة (+2,000)</label>
+    <label><input type="checkbox" value="7000"> صورة مطبوعة (+7,000)</label>
+  </div>
+
+  <button onclick="calculateTotal()">🍰 احسب السعر الآن</button>
+
+  <h3 id="total">السعر النهائي: 0 د.ع</h3>
+
+  <script>
+    function getBasePrice(people, type) {
+      const prices = {
+        "fancy": {
+          "4-5": 40000, "6": 45000, "7-8": 50000, "8-9": 55000, "10-12": 60000
+        },
+        "plain": {
+          "4-5": 38000, "6": 43000, "7-8": 48000, "8-9": 53000, "10-12": 58000
+        },
+        "basic": {
+          "4-5": 25000, "6": 30000, "7-8": 35000, "8-9": 40000, "10-12": 45000, "13-15": 50000
+        }
+      };
+      if (type === "basic" && people === "13-15") return 55000; // special case
+      return prices[type][people] || 0;
+    }
+
+    function calculateTotal() {
+      let people = document.getElementById("people").value;
+      let cakeType = document.querySelector("input[name=cakeType]:checked").value;
+      let base = getBasePrice(people, cakeType);
+      let addons = 0;
+      document.querySelectorAll("input[type=checkbox]:checked").forEach(cb => addons += parseInt(cb.value));
+      let total = base + addons;
+      document.getElementById("total").innerText = "السعر النهائي: " + total.toLocaleString() + " د.ع";
+    }
+  </script>
+</body>
+</html>
